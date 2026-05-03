@@ -210,7 +210,9 @@ public class ScanFragment extends Fragment {
         scanViewModel.setTotalTime(0);
         scanViewModel.setScanSpeed(0);
 
+        // Botón → verde (escaneando)
         btnInventory.setText(R.string.scan_stop_inventory);
+        btnInventory.setActivated(true);
 
         // Iniciar timer de 1 segundo
         mHandler.removeMessages(MSG_TIMER);
@@ -224,7 +226,9 @@ public class ScanFragment extends Fragment {
     private void stopInventory() {
         inventoryFlag = false;
         mHandler.removeMessages(MSG_TIMER);
+        // Botón → azul (detenido)
         btnInventory.setText(R.string.scan_start_inventory);
+        btnInventory.setActivated(false);
         Log.d(TAG, "Inventario detenido");
     }
 

@@ -1,47 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="#F5F5F5">
-
-    <!-- Barra de título -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:background="#1565C0"
-        android:gravity="center_vertical"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/app_name"
-            android:textColor="#FFFFFF"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/tv_label_count"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="0"
-            android:textColor="#FFFFFF"
-            android:textSize="14sp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=" tags"
-            android:textColor="#BBDEFB"
-            android:textSize="14sp" />
-
-    </LinearLayout>
 
     <!-- Panel de estadísticas -->
     <LinearLayout
@@ -68,7 +31,7 @@
                 android:textSize="11sp" />
 
             <TextView
-                android:id="@+id/tv_label_count_stat"
+                android:id="@+id/tv_label_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="0"
@@ -205,13 +168,15 @@
         android:clipToPadding="false"
         android:paddingBottom="8dp" />
 
-    <!-- Botón de inventario -->
+    <!-- Botón de inventario:
+         backgroundTint cambia dinámicamente desde ScanFragment
+         según el estado activated (verde=escaneando, azul=detenido) -->
     <Button
         android:id="@+id/btn_inventory"
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:layout_margin="12dp"
-        android:backgroundTint="#1565C0"
+        android:backgroundTint="@color/btn_inventory_color"
         android:text="@string/scan_start_inventory"
         android:textColor="#FFFFFF"
         android:textSize="16sp"

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="32dp"
+    android:background="#F5F5F5">
+
+    <!-- Ícono -->
+    <ImageView
+        android:layout_width="96dp"
+        android:layout_height="96dp"
+        android:src="@mipmap/ic_launcher"
+        android:contentDescription="Logo" />
+
+    <!-- Nombre de la app -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="@string/app_name"
+        android:textColor="#1565C0"
+        android:textSize="26sp"
+        android:textStyle="bold" />
+
+    <!-- Versión -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/about_version"
+        android:textColor="#757575"
+        android:textSize="14sp" />
+
+    <!-- Separador -->
+    <View
+        android:layout_width="60dp"
+        android:layout_height="2dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="24dp"
+        android:background="#1565C0" />
+
+    <!-- Desarrollado por -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/about_developed_by_label"
+        android:textColor="#9E9E9E"
+        android:textSize="13sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:text="@string/about_developer"
+        android:textColor="#1565C0"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="@string/about_year"
+        android:textColor="#757575"
+        android:textSize="14sp" />
+
+    <!-- Descripción -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:gravity="center"
+        android:text="@string/about_description"
+        android:textColor="#616161"
+        android:textSize="13sp"
+        android:lineSpacingExtra="4dp" />
+
+</LinearLayout>

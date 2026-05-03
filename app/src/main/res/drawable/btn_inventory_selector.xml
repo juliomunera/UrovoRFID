@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Selector de color para el botón de inventario:
+     - Escaneando (activated=true) → verde
+     - Detenido   (activated=false) → azul primario -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_activated="true"  android:color="#2E7D32" /> <!-- verde oscuro -->
+    <item                                 android:color="#1565C0" /> <!-- azul primario -->
+</selector>
