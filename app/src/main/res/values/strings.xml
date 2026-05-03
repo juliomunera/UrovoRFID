@@ -12,6 +12,7 @@
     <string name="label_speed">Velocidad</string>
     <string name="label_time">Tiempo</string>
     <string name="label_count">Conteo</string>
+    <string name="label_epc_desc">EPC / Descripción</string>
 
     <!-- Errors -->
     <string name="rfid_not_connected">Lector RFID no conectado</string>
@@ -48,7 +49,7 @@
     <string name="inventary_tag_id_label">TAG ID (EPC)</string>
     <string name="inventary_tag_id_hint">Ej: E2003412012345678901</string>
     <string name="inventary_desc_label">Descripción</string>
-    <string name="inventary_desc_hint">Ej: Caja de producto A</string>
+    <string name="inventary_desc_hint">Ej: Nombre del estudiante</string>
     <string name="inventary_delete_title">Eliminar TAG</string>
     <string name="inventary_delete_msg">¿Eliminar el TAG %s del inventario?</string>
 

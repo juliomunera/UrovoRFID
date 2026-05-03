@@ -27,7 +27,9 @@ import com.ubx.rfid.R;
 import com.ubx.rfid.adapter.ScanAdapter;
 import com.ubx.rfid.db.AppDatabase;
 import com.ubx.rfid.db.ErrorDao;
+import com.ubx.rfid.db.InventaryDao;
 import com.ubx.rfid.db.TagReadDao;
+import com.ubx.rfid.model.InventaryModel;
 import com.ubx.rfid.util.BeepManager;
 import com.ubx.rfid.util.sharedPreference.PreKey;
 import com.ubx.rfid.util.sharedPreference.SPUtils;
@@ -247,6 +249,7 @@ public class ScanFragment extends Fragment {
 
     /**
      * Procesa un TAG recibido del callback y lo agrega a la lista (con deduplicación).
+     * Consulta la tabla Inventary para mostrar la descripción si el TAG está catalogado.
      */
     private void processTag(ScanModel model) {
         totalCount++;
@@ -254,24 +257,40 @@ public class ScanFragment extends Fragment {
 
         String epc = model.getEpc();
         if (deduplicationMap.containsKey(epc)) {
-            // TAG ya conocido: actualizar RSSI y contador (sin beep)
+            // TAG ya conocido: solo actualizar RSSI y contador (sin beep)
             int pos = deduplicationMap.get(epc);
             ScanModel existing = mData.get(pos);
             existing.setRssi(model.getRssi());
             existing.setCount(existing.getCount() + 1);
             mAdapter.notifyItemChanged(pos);
         } else {
-            // TAG nuevo: agregar a la lista, guardar en BD y emitir beep
+            // TAG nuevo: consultar inventario en hilo de fondo, luego actualizar UI
             deduplicationMap.put(epc, mData.size());
             mData.add(model);
+            int insertedPos = mData.size() - 1;
             scanViewModel.setLabelCount(mData.size());
-            mAdapter.notifyItemInserted(mData.size() - 1);
+            mAdapter.notifyItemInserted(insertedPos);
             BeepManager.beep();
-            // Guardar en SQLite en hilo de fondo
+
+            // Consultar inventario y guardar en BD en hilo de fondo
             new Thread(() -> {
                 try {
                     AppDatabase db = AppDatabase.getInstance(requireContext());
+
+                    // 1. Buscar descripción en el inventario local
+                    InventaryModel inv = new InventaryDao(db).findByTagId(epc);
+                    if (inv != null && inv.getDescription() != null
+                            && !inv.getDescription().isEmpty()) {
+                        // Actualizar el displayText en el modelo y refrescar el item en UI
+                        requireActivity().runOnUiThread(() -> {
+                            model.setDisplayText(inv.getDescription());
+                            mAdapter.notifyItemChanged(insertedPos);
+                        });
+                    }
+
+                    // 2. Guardar lectura en TagRead
                     new TagReadDao(db).insert(epc);
+
                 } catch (Exception e) {
                     ErrorDao.logError(AppDatabase.getInstance(requireContext()),
                             "ScanFragment.processTag", e);

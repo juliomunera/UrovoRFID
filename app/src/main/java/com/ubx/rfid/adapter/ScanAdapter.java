@@ -16,6 +16,10 @@ import java.util.List;
 
 /**
  * Adapter para la lista de TAGs RFID escaneados.
+ *
+ * Columna EPC/Descripción:
+ *  - Si el TAG está en el inventario local → muestra la descripción (texto normal, azul oscuro)
+ *  - Si el TAG NO está en el inventario    → muestra el EPC raw (fuente monospace, gris)
  */
 public class ScanAdapter extends RecyclerView.Adapter<ScanAdapter.ScanViewHolder> {
 
@@ -36,25 +40,37 @@ public class ScanAdapter extends RecyclerView.Adapter<ScanAdapter.ScanViewHolder
     @NonNull
     @Override
     public ScanViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.recycler_item_scan, parent, false);
+        View view = LayoutInflater.from(mContext)
+                .inflate(R.layout.recycler_item_scan, parent, false);
         return new ScanViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ScanViewHolder holder, int position) {
         ScanModel model = mData.get(position);
-        holder.tvEpc.setText(model.getEpc());
+
+        // --- Columna EPC/Descripción ---
+        if (model.hasDescription()) {
+            // TAG catalogado: mostrar descripción en texto normal + EPC pequeño debajo
+            holder.tvEpc.setText(model.getDisplayText());
+            holder.tvEpc.setTextColor(0xFF1A237E);      // azul índigo
+            holder.tvEpc.setTextSize(13f);
+            holder.tvSubEpc.setText(model.getEpc());
+            holder.tvSubEpc.setVisibility(View.VISIBLE);
+        } else {
+            // TAG no catalogado: mostrar EPC en monospace
+            holder.tvEpc.setText(model.getEpc());
+            holder.tvEpc.setTextColor(0xFF424242);      // gris oscuro
+            holder.tvEpc.setTextSize(12f);
+            holder.tvSubEpc.setVisibility(View.GONE);
+        }
+
         holder.tvRssi.setText(model.getRssi());
         holder.tvCount.setText(String.valueOf(model.getCount()));
-        holder.tvPc.setText(model.getPc());
 
-        // Resaltar el item seleccionado
-        holder.itemView.setSelected(model.isSelected());
+        // Resaltar item seleccionado
         holder.itemView.setBackgroundColor(
-                model.isSelected()
-                        ? 0xFFE3F2FD   // azul claro
-                        : 0xFFFFFFFF   // blanco
-        );
+                model.isSelected() ? 0xFFE3F2FD : 0xFFFFFFFF);
 
         holder.itemView.setOnClickListener(v -> {
             if (mListener != null) mListener.onItemClick(holder.getAdapterPosition());
@@ -67,14 +83,17 @@ public class ScanAdapter extends RecyclerView.Adapter<ScanAdapter.ScanViewHolder
     }
 
     static class ScanViewHolder extends RecyclerView.ViewHolder {
-        TextView tvEpc, tvRssi, tvCount, tvPc;
+        TextView tvEpc;      // descripción o EPC
+        TextView tvSubEpc;   // EPC pequeño debajo de la descripción (solo si catalogado)
+        TextView tvRssi;
+        TextView tvCount;
 
         ScanViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvEpc   = itemView.findViewById(R.id.tv_epc);
-            tvRssi  = itemView.findViewById(R.id.tv_rssi);
-            tvCount = itemView.findViewById(R.id.tv_count);
-            tvPc    = itemView.findViewById(R.id.tv_pc);
+            tvEpc    = itemView.findViewById(R.id.tv_epc);
+            tvSubEpc = itemView.findViewById(R.id.tv_sub_epc);
+            tvRssi   = itemView.findViewById(R.id.tv_rssi);
+            tvCount  = itemView.findViewById(R.id.tv_count);
         }
     }
 }
