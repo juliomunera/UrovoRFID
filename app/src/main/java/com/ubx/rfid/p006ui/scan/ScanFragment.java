@@ -155,13 +155,13 @@ public class ScanFragment extends Fragment {
         loadSettings();
 
         // Inicializar el beep
-        BeepManager.init();
+        BeepManager.init(requireContext());
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        BeepManager.init();
+        BeepManager.init(requireContext());
         if (mRfidManager != null) {
             mRfidManager.registerCallback(mRfidCallback);
         }
