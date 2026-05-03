@@ -25,6 +25,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ubx.rfid.MainViewModel;
 import com.ubx.rfid.R;
 import com.ubx.rfid.adapter.ScanAdapter;
+import com.ubx.rfid.util.BeepManager;
 import com.ubx.rfid.util.sharedPreference.PreKey;
 import com.ubx.rfid.util.sharedPreference.SPUtils;
 import com.ubx.usdk.rfid.RfidManager;
@@ -152,11 +153,15 @@ public class ScanFragment extends Fragment {
 
         // Cargar configuración guardada
         loadSettings();
+
+        // Inicializar el beep
+        BeepManager.init();
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        BeepManager.init();
         if (mRfidManager != null) {
             mRfidManager.registerCallback(mRfidCallback);
         }
@@ -166,6 +171,7 @@ public class ScanFragment extends Fragment {
     public void onPause() {
         super.onPause();
         stopInventory();
+        BeepManager.release();
         if (mRfidManager != null) {
             mRfidManager.unregisterCallback(mRfidCallback);
         }
@@ -245,18 +251,19 @@ public class ScanFragment extends Fragment {
 
         String epc = model.getEpc();
         if (deduplicationMap.containsKey(epc)) {
-            // TAG ya conocido: actualizar RSSI y contador
+            // TAG ya conocido: actualizar RSSI y contador (sin beep)
             int pos = deduplicationMap.get(epc);
             ScanModel existing = mData.get(pos);
             existing.setRssi(model.getRssi());
             existing.setCount(existing.getCount() + 1);
             mAdapter.notifyItemChanged(pos);
         } else {
-            // TAG nuevo
+            // TAG nuevo: agregar a la lista y emitir beep
             deduplicationMap.put(epc, mData.size());
             mData.add(model);
             scanViewModel.setLabelCount(mData.size());
             mAdapter.notifyItemInserted(mData.size() - 1);
+            BeepManager.beep();
         }
     }
 
