@@ -1,0 +1,21 @@
+*.iml
+.gradle
+/local.properties
+/.idea
+**/.idea
+.DS_Store
+/build
+**/build/
+/captures
+.externalNativeBuild
+.cxx
+*.apk
+*.aab
+
+# APK extraído del dispositivo (no subir)
+/RFID.apk
+/rfid_decompiled/
+
+# Keystore
+*.jks
+*.keystore

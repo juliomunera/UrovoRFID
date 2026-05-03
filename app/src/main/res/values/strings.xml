@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">RFID Ingreso</string>
+
+    <!-- Scan -->
+    <string name="scan_start_inventory">Iniciar escaneo</string>
+    <string name="scan_stop_inventory">Detener Escaneo</string>
+
+    <!-- Stats -->
+    <string name="label_unique">Únicos</string>
+    <string name="label_total">Total</string>
+    <string name="label_speed">Velocidad</string>
+    <string name="label_time">Tiempo</string>
+    <string name="label_count">Conteo</string>
+
+    <!-- Errors -->
+    <string name="rfid_not_connected">Lector RFID no conectado</string>
+    <string name="rfid_connect_failed">Error al conectar con el lector RFID</string>
+    <string name="press_back_again">Presiona atrás de nuevo para salir</string>
+</resources>

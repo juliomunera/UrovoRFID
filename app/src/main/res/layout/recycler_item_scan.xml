@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="#FFFFFF">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp">
+
+        <!-- EPC -->
+        <TextView
+            android:id="@+id/tv_epc"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:textColor="#212121"
+            android:textSize="13sp"
+            android:fontFamily="monospace"
+            android:text="EPC" />
+
+        <!-- RSSI -->
+        <TextView
+            android:id="@+id/tv_rssi"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="#1565C0"
+            android:textSize="12sp"
+            android:text="-dBm" />
+
+        <!-- Contador -->
+        <TextView
+            android:id="@+id/tv_count"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="#757575"
+            android:textSize="12sp"
+            android:text="1" />
+
+    </LinearLayout>
+
+    <!-- PC (oculto por defecto, visible en modo detalle) -->
+    <TextView
+        android:id="@+id/tv_pc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:paddingBottom="4dp"
+        android:textColor="#9E9E9E"
+        android:textSize="11sp"
+        android:visibility="gone"
+        android:text="PC: " />
+
+    <!-- Divisor -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#E0E0E0" />
+
+</LinearLayout>
