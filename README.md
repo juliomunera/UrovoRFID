@@ -278,3 +278,124 @@ Si sales de la pantalla, el escaneo se detiene automáticamente y no hay fugas d
 ### Resumen
 
 `ScanFragment` arranca el inventario RFID, recibe TAGs por callback desde el lector, los deduplica, los muestra en una lista con RSSI y contador, y mide velocidad/tiempo — todo en bucle continuo hasta que el usuario para.
+
+---
+
+## Flujo completo al detectar un TAG nuevo
+
+### Visión general
+
+Cuando el lector RFID detecta un TAG, la información viaja a través de varias capas antes de aparecer en pantalla. El flujo completo involucra tres hilos distintos y cuatro capas de la arquitectura.
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│  Dispositivo físico (lector UHF integrado en Urovo DT50)            │
+│  Emite señal de radio → TAG responde con su EPC                     │
+└──────────────────────────────┬──────────────────────────────────────┘
+                               │ Puerto serie /dev/ttyHSL0 @ 115200
+                               ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│  Servicio del sistema: com.ubx.usdk.rfid (RfidService)              │
+│  Proceso separado — firmware Urovo                                  │
+│  Decodifica el protocolo EPC Gen2 / ISO 18000-6C                    │
+└──────────────────────────────┬──────────────────────────────────────┘
+                               │ Android Binder IPC
+                               ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│  IRfidCallback.onInventoryTag()  [HILO BINDER]                      │
+│  Parámetros recibidos:                                              │
+│    - epc      : código EPC del TAG (ej: "E2003412012345678901")     │
+│    - rssiRaw  : señal raw (restar 129 para obtener dBm)             │
+│    - pc, crc  : datos de protocolo                                  │
+└──────────────────────────────┬──────────────────────────────────────┘
+                               │ mHandler.sendMessage()
+                               ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│  ScanHandler.handleMessage()  [HILO UI]                             │
+│  Convierte RSSI: rssiDbm = Integer.parseInt(rssiRaw) - 129          │
+│  Crea ScanModel(epc, rssi, pc, crc)                                 │
+│  Llama a processTag(model)                                          │
+└──────────────────────────────┬──────────────────────────────────────┘
+                               │
+                               ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│  ScanFragment.processTag()  [HILO UI]                               │
+│                                                                     │
+│  ¿El EPC ya está en deduplicationMap?                               │
+│  ├── SÍ (TAG duplicado):                                            │
+│  │     Actualiza RSSI y suma al contador                            │
+│  │     notifyItemChanged() → refresca fila en pantalla              │
+│  │     (sin beep, sin guardar en BD)                                │
+│  │                                                                  │
+│  └── NO (TAG nuevo):                                                │
+│        Agrega a la lista con EPC como texto provisional             │
+│        notifyItemInserted() → aparece en pantalla inmediatamente    │
+│        BeepManager.beep() → emite sonido de confirmación            │
+│        Lanza hilo de fondo ──────────────────────────────────────┐  │
+└──────────────────────────────────────────────────────────────────┼──┘
+                                                                   │
+                               ┌───────────────────────────────────┘
+                               ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│  Hilo de fondo (Thread)                                             │
+│                                                                     │
+│  1. InventaryDao.findByTagId(epc)                                   │
+│     ¿Existe el TAG en la tabla Inventary?                           │
+│     ├── SÍ: obtiene la descripción                                  │
+│     │     runOnUiThread:                                            │
+│     │       model.setDisplayText(descripcion)                       │
+│     │       notifyItemChanged() → fila se actualiza con descripción │
+│     └── NO: el EPC raw permanece como texto en pantalla             │
+│                                                                     │
+│  2. TagReadDao.insert(epc)                                          │
+│     Guarda en tabla TagRead:                                        │
+│       tagId    = EPC del TAG                                        │
+│       readDate = timestamp actual (YYYY-MM-DD HH:mm:ss)            │
+│       synced   = 0  (pendiente de envío a la API)                   │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### Detalle de cada paso
+
+**1. Lector físico → RfidService**
+
+El lector UHF integrado en el DT50 se comunica por puerto serie (`/dev/ttyHSL0` a 115200 bps). El servicio del sistema `com.ubx.usdk.rfid` gestiona el protocolo EPC Gen2 y expone los resultados via AIDL.
+
+**2. Callback AIDL → Handler**
+
+`onInventoryTag()` se ejecuta en el hilo Binder, que es un hilo del sistema. No se puede tocar la UI desde ahí. Por eso se usa un `Handler` vinculado al hilo principal para trasladar el evento de forma segura.
+
+**3. Deduplicación**
+
+El `deduplicationMap` es un `HashMap<String, Integer>` que mapea cada EPC a su posición en la lista. Si el mismo TAG se lee 100 veces, solo aparece una fila — el contador se incrementa y el RSSI se actualiza con la lectura más reciente.
+
+**4. Consulta al inventario (asíncrona)**
+
+La consulta a SQLite se hace en un hilo de fondo para no bloquear el hilo UI. El TAG aparece en pantalla de inmediato con su EPC, y en milisegundos se actualiza con la descripción si existe en el inventario local.
+
+**5. Persistencia en TagRead**
+
+Cada TAG nuevo se guarda en la tabla `TagRead` con `synced = 0`. El `SyncWorker` (WorkManager) recoge estos registros periódicamente y los envía a la API central, marcándolos como `synced = 1` tras el envío exitoso.
+
+### Visualización en pantalla
+
+| Caso | Columna EPC / Descripción |
+|------|--------------------------|
+| TAG en inventario local | **Descripción** (azul índigo) + EPC pequeño en gris debajo |
+| TAG no catalogado | EPC raw en fuente monospace gris |
+
+### Ciclo de vida del inventario en BD
+
+```
+TAG leído → TagRead (synced=0)
+                │
+                │  SyncWorker cada 15 min
+                ▼
+           Envío a API → TagRead (synced=1)
+                │
+                │  deleteOlderThan(retention_days)
+                ▼
+           Eliminado (default: 8 días)
+```
+
+El valor de `retention_days` es configurable desde el menú **Configuración** de la app y se almacena en la tabla `Settings`.
