@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:text="@string/inventary_tag_id_label"
+        android:textColor="#757575" android:textSize="12sp"/>
+
+    <EditText android:id="@+id/et_tag_id"
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:hint="@string/inventary_tag_id_hint"
+        android:inputType="textCapCharacters"
+        android:fontFamily="monospace"/>
+
+    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="@string/inventary_desc_label"
+        android:textColor="#757575" android:textSize="12sp"/>
+
+    <EditText android:id="@+id/et_description"
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:hint="@string/inventary_desc_hint"
+        android:inputType="textCapSentences"/>
+
+</LinearLayout>

@@ -21,6 +21,9 @@
     <!-- Navigation drawer -->
     <string name="nav_header_subtitle">Urovo DT50 · UHF RFID</string>
     <string name="menu_rfid_ingreso">RFID Ingreso</string>
+    <string name="menu_sync">Sincronizar TAG</string>
+    <string name="menu_inventary">Inventario</string>
+    <string name="menu_settings">Configuración</string>
     <string name="menu_about">Acerca de</string>
     <string name="nav_open">Abrir menú</string>
     <string name="nav_close">Cerrar menú</string>
@@ -31,4 +34,38 @@
     <string name="about_developer">Inventor.co</string>
     <string name="about_year">2026</string>
     <string name="about_description">Aplicación para lectura de TAGs RFID UHF\na larga distancia en dispositivos Urovo DT50.\nBasada en ingeniería inversa del SDK Urovo.</string>
+
+    <!-- Sync -->
+    <string name="btn_sync_now">Sincronizar Ahora</string>
+    <string name="sync_in_progress">Sincronizando…</string>
+    <string name="sync_done">Sincronizados %d TAGs</string>
+    <string name="sync_error">Error al sincronizar</string>
+
+    <!-- Inventary -->
+    <string name="inventary_add_btn">+ Agregar TAG</string>
+    <string name="inventary_add_title">Agregar TAG al Inventario</string>
+    <string name="inventary_tag_required">El TAG ID es obligatorio</string>
+    <string name="inventary_tag_id_label">TAG ID (EPC)</string>
+    <string name="inventary_tag_id_hint">Ej: E2003412012345678901</string>
+    <string name="inventary_desc_label">Descripción</string>
+    <string name="inventary_desc_hint">Ej: Caja de producto A</string>
+    <string name="inventary_delete_title">Eliminar TAG</string>
+    <string name="inventary_delete_msg">¿Eliminar el TAG %s del inventario?</string>
+
+    <!-- Settings -->
+    <string name="settings_retention_label">Días de retención de datos</string>
+    <string name="settings_retention_hint">Los TAGs leídos se eliminan después de este número de días</string>
+    <string name="settings_sync_interval_label">Intervalo de sincronización (minutos)</string>
+    <string name="settings_sync_interval_hint">Cada cuántos minutos se envían los TAGs a la API</string>
+    <string name="settings_device_id_label">ID del dispositivo</string>
+    <string name="settings_api_url_label">URL de la API</string>
+    <string name="settings_api_url_hint">Se activa cuando la API esté disponible</string>
+    <string name="settings_save_btn">Guardar Configuración</string>
+    <string name="settings_saved">Configuración guardada</string>
+    <string name="settings_invalid_number">Debe ser un número entero</string>
+
+    <!-- Buttons -->
+    <string name="btn_save">Guardar</string>
+    <string name="btn_cancel">Cancelar</string>
+    <string name="btn_delete">Eliminar</string>
 </resources>

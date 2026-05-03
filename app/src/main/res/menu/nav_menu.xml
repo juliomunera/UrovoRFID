@@ -1,13 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item
-        android:id="@+id/nav_scan"
+    <item android:id="@+id/nav_scan"
         android:icon="@drawable/ic_rfid"
         android:title="@string/menu_rfid_ingreso" />
 
-    <item
-        android:id="@+id/nav_about"
+    <item android:id="@+id/nav_sync"
+        android:icon="@drawable/ic_sync"
+        android:title="@string/menu_sync" />
+
+    <item android:id="@+id/nav_inventary"
+        android:icon="@drawable/ic_inventory"
+        android:title="@string/menu_inventary" />
+
+    <item android:id="@+id/nav_settings"
+        android:icon="@drawable/ic_settings"
+        android:title="@string/menu_settings" />
+
+    <item android:id="@+id/nav_about"
         android:icon="@drawable/ic_info"
         android:title="@string/menu_about" />
 

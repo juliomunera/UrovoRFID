@@ -25,6 +25,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ubx.rfid.MainViewModel;
 import com.ubx.rfid.R;
 import com.ubx.rfid.adapter.ScanAdapter;
+import com.ubx.rfid.db.AppDatabase;
+import com.ubx.rfid.db.ErrorDao;
+import com.ubx.rfid.db.TagReadDao;
 import com.ubx.rfid.util.BeepManager;
 import com.ubx.rfid.util.sharedPreference.PreKey;
 import com.ubx.rfid.util.sharedPreference.SPUtils;
@@ -258,12 +261,22 @@ public class ScanFragment extends Fragment {
             existing.setCount(existing.getCount() + 1);
             mAdapter.notifyItemChanged(pos);
         } else {
-            // TAG nuevo: agregar a la lista y emitir beep
+            // TAG nuevo: agregar a la lista, guardar en BD y emitir beep
             deduplicationMap.put(epc, mData.size());
             mData.add(model);
             scanViewModel.setLabelCount(mData.size());
             mAdapter.notifyItemInserted(mData.size() - 1);
             BeepManager.beep();
+            // Guardar en SQLite en hilo de fondo
+            new Thread(() -> {
+                try {
+                    AppDatabase db = AppDatabase.getInstance(requireContext());
+                    new TagReadDao(db).insert(epc);
+                } catch (Exception e) {
+                    ErrorDao.logError(AppDatabase.getInstance(requireContext()),
+                            "ScanFragment.processTag", e);
+                }
+            }).start();
         }
     }
 

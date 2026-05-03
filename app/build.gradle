@@ -69,4 +69,10 @@ dependencies {
 
     // Gson
     implementation 'com.google.code.gson:gson:2.10.1'
+
+    // OkHttp (para envío a la API)
+    implementation 'com.squareup.okhttp3:okhttp:4.11.0'
+
+    // WorkManager (agente de sincronización cada 5 minutos)
+    implementation 'androidx.work:work-runtime:2.9.0'
 }

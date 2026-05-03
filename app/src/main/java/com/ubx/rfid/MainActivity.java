@@ -16,7 +16,10 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.navigation.NavigationView;
 import com.ubx.rfid.p006ui.about.AboutFragment;
+import com.ubx.rfid.p006ui.inventary.InventaryFragment;
 import com.ubx.rfid.p006ui.scan.ScanFragment;
+import com.ubx.rfid.p006ui.settings.SettingsFragment;
+import com.ubx.rfid.p006ui.sync.SyncFragment;
 import com.ubx.rfid.util.sharedPreference.PreKey;
 import com.ubx.rfid.util.sharedPreference.SPUtils;
 import com.ubx.usdk.rfid.RfidManager;
@@ -101,9 +104,15 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_scan) {
-            navigateTo(new ScanFragment(), getString(R.string.menu_rfid_ingreso));
+            navigateTo(new ScanFragment(),     getString(R.string.menu_rfid_ingreso));
+        } else if (id == R.id.nav_sync) {
+            navigateTo(new SyncFragment(),     getString(R.string.menu_sync));
+        } else if (id == R.id.nav_inventary) {
+            navigateTo(new InventaryFragment(), getString(R.string.menu_inventary));
+        } else if (id == R.id.nav_settings) {
+            navigateTo(new SettingsFragment(), getString(R.string.menu_settings));
         } else if (id == R.id.nav_about) {
-            navigateTo(new AboutFragment(), getString(R.string.menu_about));
+            navigateTo(new AboutFragment(),    getString(R.string.menu_about));
         }
 
         drawerLayout.closeDrawer(GravityCompat.START);

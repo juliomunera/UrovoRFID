@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F5F5F5">
+
+    <!-- Resumen de estado -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF"
+        android:elevation="2dp"
+        android:orientation="horizontal"
+        android:padding="16dp">
+
+        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
+            android:layout_weight="1" android:gravity="center" android:orientation="vertical">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="Pendientes" android:textColor="#757575" android:textSize="12sp"/>
+            <TextView android:id="@+id/tv_pending_count"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="0" android:textColor="#E65100"
+                android:textSize="24sp" android:textStyle="bold"/>
+        </LinearLayout>
+
+        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
+            android:layout_weight="1" android:gravity="center" android:orientation="vertical">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="Sincronizados" android:textColor="#757575" android:textSize="12sp"/>
+            <TextView android:id="@+id/tv_synced_count"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="0" android:textColor="#2E7D32"
+                android:textSize="24sp" android:textStyle="bold"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!-- Cabecera lista -->
+    <LinearLayout android:layout_width="match_parent" android:layout_height="36dp"
+        android:background="#E3F2FD" android:orientation="horizontal"
+        android:paddingStart="12dp" android:paddingEnd="12dp">
+        <TextView android:layout_width="0dp" android:layout_height="match_parent"
+            android:layout_weight="3" android:gravity="center_vertical"
+            android:text="TAG (EPC)" android:textColor="#1565C0"
+            android:textSize="12sp" android:textStyle="bold"/>
+        <TextView android:layout_width="0dp" android:layout_height="match_parent"
+            android:layout_weight="2" android:gravity="center"
+            android:text="Fecha Lectura" android:textColor="#1565C0"
+            android:textSize="12sp" android:textStyle="bold"/>
+        <TextView android:layout_width="0dp" android:layout_height="match_parent"
+            android:layout_weight="1" android:gravity="center"
+            android:text="Estado" android:textColor="#1565C0"
+            android:textSize="12sp" android:textStyle="bold"/>
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_sync"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="#FFFFFF"/>
+
+    <Button
+        android:id="@+id/btn_sync_now"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_margin="12dp"
+        android:backgroundTint="#1565C0"
+        android:text="@string/btn_sync_now"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        android:textStyle="bold"/>
+
+</LinearLayout>

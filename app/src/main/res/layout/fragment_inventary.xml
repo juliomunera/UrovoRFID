@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F5F5F5">
+
+    <!-- Cabecera -->
+    <LinearLayout android:layout_width="match_parent" android:layout_height="36dp"
+        android:background="#E3F2FD" android:orientation="horizontal"
+        android:paddingStart="12dp" android:paddingEnd="12dp">
+        <TextView android:layout_width="0dp" android:layout_height="match_parent"
+            android:layout_weight="2" android:gravity="center_vertical"
+            android:text="TAG ID" android:textColor="#1565C0"
+            android:textSize="12sp" android:textStyle="bold"/>
+        <TextView android:layout_width="0dp" android:layout_height="match_parent"
+            android:layout_weight="3" android:gravity="center_vertical"
+            android:text="Descripción" android:textColor="#1565C0"
+            android:textSize="12sp" android:textStyle="bold"/>
+        <TextView android:layout_width="48dp" android:layout_height="match_parent"
+            android:gravity="center" android:text="" />
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_inventary"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="#FFFFFF"/>
+
+    <Button
+        android:id="@+id/btn_add_tag"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_margin="12dp"
+        android:backgroundTint="#1565C0"
+        android:text="@string/inventary_add_btn"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        android:textStyle="bold"/>
+
+</LinearLayout>

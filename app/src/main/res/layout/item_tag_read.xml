@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingStart="12dp" android:paddingEnd="12dp"
+    android:paddingTop="10dp" android:paddingBottom="10dp">
+
+    <TextView android:id="@+id/tv_tag_id"
+        android:layout_width="0dp" android:layout_height="wrap_content"
+        android:layout_weight="3" android:textSize="12sp"
+        android:fontFamily="monospace" android:textColor="#212121"/>
+
+    <TextView android:id="@+id/tv_read_date"
+        android:layout_width="0dp" android:layout_height="wrap_content"
+        android:layout_weight="2" android:gravity="center"
+        android:textSize="11sp" android:textColor="#757575"/>
+
+    <TextView android:id="@+id/tv_sync_status"
+        android:layout_width="0dp" android:layout_height="wrap_content"
+        android:layout_weight="1" android:gravity="center"
+        android:textSize="11sp" android:textStyle="bold"/>
+
+</LinearLayout>
