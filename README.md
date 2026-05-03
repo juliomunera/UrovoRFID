@@ -171,3 +171,112 @@ adb install app/build/outputs/apk/debug/app-debug.apk
 - El RSSI raw se convierte a dBm restando 129: `rssiDbm = rawValue - 129`
 - El APK original incluye soporte para exportar a Excel (Apache POI)
 - El trigger físico usa keyCode **523** (específico del Urovo DT50)
+
+---
+
+## Explicación detallada: ScanFragment
+
+`ScanFragment` es el corazón de la app. Es la pantalla principal donde se leen los TAGs RFID.
+
+### 1. Estado interno
+
+```java
+private byte session = 1;   // Sesión EPC Gen2 (S1)
+private byte state   = 0;   // Target A
+private byte repeat  = 1;   // 1 ciclo por llamada
+private boolean inventoryFlag = false;  // ¿está escaneando?
+private final Map<String, Integer> deduplicationMap = new HashMap<>();
+```
+
+`deduplicationMap` es clave: guarda `EPC → posición en la lista`. Así sabe si un TAG ya fue detectado antes o es nuevo.
+
+### 2. Flujo principal
+
+```
+Usuario pulsa botón (o trigger físico)
+        ↓
+  toggleInventory()
+        ↓
+  startInventory()  →  mRfidManager.customizedSessionTargetInventory(...)
+                                ↓
+                    El lector emite señal UHF
+                                ↓
+                    TAG responde con su EPC
+                                ↓
+              onInventoryTag() [hilo Binder]
+                                ↓
+              mHandler.sendMessage() [→ UI thread]
+                                ↓
+                    processTag() → actualiza lista
+                                ↓
+              onInventoryTagEnd() → relanza inventario
+                                ↓
+              (bucle continuo hasta stopInventory())
+```
+
+### 3. El callback RFID (clase interna `RFIDCallback`)
+
+Es el receptor de eventos del lector. Corre en el **hilo Binder** (no en el UI thread), por eso usa un `Handler` para pasar los datos a la UI:
+
+```java
+public void onInventoryTag(..., String rssiRaw, ..., String epc, ...) {
+    // Convierte RSSI: el lector devuelve un número raw, hay que restar 129
+    rssiStr = (Integer.parseInt(rssiRaw) - 129) + "dBm";
+
+    ScanModel model = new ScanModel(epc, 1, rssiStr, pc, crc, false);
+    mHandler.sendMessage(...);  // pasa al UI thread
+}
+
+public void onInventoryTagEnd(...) {
+    // Fin de un ciclo → relanza automáticamente para escaneo continuo
+    mRfidManager.customizedSessionTargetInventory(readId, session, state, repeat);
+}
+```
+
+### 4. Deduplicación en `processTag()`
+
+```java
+if (deduplicationMap.containsKey(epc)) {
+    // TAG ya conocido → solo actualiza RSSI y suma al contador
+    existing.setRssi(model.getRssi());
+    existing.setCount(existing.getCount() + 1);
+    mAdapter.notifyItemChanged(pos);
+} else {
+    // TAG nuevo → lo agrega a la lista
+    deduplicationMap.put(epc, mData.size());
+    mData.add(model);
+    mAdapter.notifyItemInserted(...);
+}
+```
+
+Esto explica por qué la lista muestra "tags únicos" vs "total lecturas": el mismo TAG puede ser leído 50 veces pero aparece una sola vez en la lista, con su contador incrementando.
+
+### 5. El Handler (clase interna `ScanHandler`)
+
+Tiene dos responsabilidades:
+
+```java
+if (msg.what == MSG_NOTIFY_ITEM) {
+    // Procesa un TAG recibido del callback
+    processTag((ScanModel) msg.obj);
+
+} else if (msg.what == MSG_TIMER) {
+    // Se dispara cada 1 segundo → actualiza tiempo y velocidad
+    totalTime++;
+    scanViewModel.setScanSpeed(totalCount / totalTime);  // tags/segundo
+    mHandler.sendEmptyMessageDelayed(MSG_TIMER, 1000L);  // se reprograma solo
+}
+```
+
+### 6. Ciclo de vida y el callback
+
+```java
+onResume()  → registerCallback()    // empieza a recibir eventos
+onPause()   → unregisterCallback()  // deja de recibir, detiene escaneo
+```
+
+Si sales de la pantalla, el escaneo se detiene automáticamente y no hay fugas de memoria.
+
+### Resumen
+
+`ScanFragment` arranca el inventario RFID, recibe TAGs por callback desde el lector, los deduplica, los muestra en una lista con RSSI y contador, y mide velocidad/tiempo — todo en bucle continuo hasta que el usuario para.
