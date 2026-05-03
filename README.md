@@ -1,8 +1,6 @@
-# UrovoRFID — Proyecto Android (Ingeniería Inversa de RFID.apk)
+# UrovoRFID — Proyecto Android (Ingeniería lectura TAG estudiantes)
 
 ## Descripción
-
-Proyecto Android reconstruido a partir de ingeniería inversa del APK `RFID.apk` instalado en el dispositivo **Urovo DT50** (`/system/app/RFID/RFID.apk`).
 
 La app permite **lectura de TAGs RFID UHF a larga distancia** usando el lector integrado del Urovo DT50.
 
@@ -163,7 +161,7 @@ adb install app/build/outputs/apk/debug/app-debug.apk
 
 ---
 
-## Notas de ingeniería inversa
+## Notas de ingeniería
 
 - El APK usa **DataBinding** y **Navigation Component** de AndroidX
 - El SDK se comunica con el servicio del sistema via **AIDL Binder**

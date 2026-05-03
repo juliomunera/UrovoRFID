@@ -5,7 +5,6 @@ import android.os.Parcelable;
 
 /**
  * Parcelable data class que contiene la configuración del lector RFID.
- * Extraído del SDK Urovo USDK (ingeniería inversa de RFID.apk).
  */
 public class RfidDate implements Parcelable {
 

@@ -8,7 +8,6 @@ import android.os.RemoteException;
 
 /**
  * Interfaz AIDL de callbacks del lector RFID Urovo.
- * Extraída por ingeniería inversa de RFID.apk (com.ubx.rfid).
  *
  * Callbacks disponibles:
  *  - onInventoryTag: se llama por cada TAG detectado en inventario

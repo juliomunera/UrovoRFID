@@ -33,7 +33,7 @@
     <string name="about_developed_by_label">Desarrollado por</string>
     <string name="about_developer">Inventor.co</string>
     <string name="about_year">2026</string>
-    <string name="about_description">Aplicación para lectura de TAGs RFID UHF\na larga distancia en dispositivos Urovo DT50.\nBasada en ingeniería inversa del SDK Urovo.</string>
+    <string name="about_description">Aplicación para lectura de TAGs RFID UHF\na larga distancia en dispositivos Urovo DT50.\nApoyo para instituciones escolares.</string>
 
     <!-- Sync -->
     <string name="btn_sync_now">Sincronizar Ahora</string>

@@ -6,7 +6,6 @@ import android.os.RemoteException;
 
 /**
  * Interfaz AIDL del gestor RFID Urovo.
- * Extraída por ingeniería inversa de RFID.apk.
  * El servicio real corre en com.ubx.usdk.rfid (RfidService).
  */
 public interface IRfidManager extends IInterface {
