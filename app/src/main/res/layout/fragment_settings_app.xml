@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F5F5F5">
@@ -15,11 +16,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
+            app:cardBackgroundColor="#FFFFFF"
             app:cardCornerRadius="8dp"
-            app:cardElevation="2dp"
-            xmlns:app="http://schemas.android.com/apk/res-auto">
+            app:cardElevation="2dp">
             <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-                android:orientation="vertical" android:padding="16dp">
+                android:orientation="vertical" android:padding="16dp"
+                android:background="#FFFFFF">
                 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
                     android:text="@string/settings_retention_label"
                     android:textColor="#1565C0" android:textSize="14sp" android:textStyle="bold"/>
@@ -28,7 +30,9 @@
                     android:textColor="#9E9E9E" android:textSize="12sp"/>
                 <EditText android:id="@+id/et_retention_days"
                     android:layout_width="match_parent" android:layout_height="wrap_content"
-                    android:inputType="number" android:hint="8"/>
+                    android:inputType="number" android:hint="8"
+                    android:textColor="#212121" android:textColorHint="#9E9E9E"
+                    android:background="@android:color/transparent"/>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
@@ -37,11 +41,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
+            app:cardBackgroundColor="#FFFFFF"
             app:cardCornerRadius="8dp"
-            app:cardElevation="2dp"
-            xmlns:app="http://schemas.android.com/apk/res-auto">
+            app:cardElevation="2dp">
             <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-                android:orientation="vertical" android:padding="16dp">
+                android:orientation="vertical" android:padding="16dp"
+                android:background="#FFFFFF">
                 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
                     android:text="@string/settings_sync_interval_label"
                     android:textColor="#1565C0" android:textSize="14sp" android:textStyle="bold"/>
@@ -50,7 +55,9 @@
                     android:textColor="#9E9E9E" android:textSize="12sp"/>
                 <EditText android:id="@+id/et_sync_interval"
                     android:layout_width="match_parent" android:layout_height="wrap_content"
-                    android:inputType="number" android:hint="5"/>
+                    android:inputType="number" android:hint="5"
+                    android:textColor="#212121" android:textColorHint="#9E9E9E"
+                    android:background="@android:color/transparent"/>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
@@ -59,17 +66,20 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
+            app:cardBackgroundColor="#FFFFFF"
             app:cardCornerRadius="8dp"
-            app:cardElevation="2dp"
-            xmlns:app="http://schemas.android.com/apk/res-auto">
+            app:cardElevation="2dp">
             <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-                android:orientation="vertical" android:padding="16dp">
+                android:orientation="vertical" android:padding="16dp"
+                android:background="#FFFFFF">
                 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
                     android:text="@string/settings_device_id_label"
                     android:textColor="#1565C0" android:textSize="14sp" android:textStyle="bold"/>
                 <EditText android:id="@+id/et_device_id"
                     android:layout_width="match_parent" android:layout_height="wrap_content"
-                    android:inputType="text" android:hint="DT50-001"/>
+                    android:inputType="text" android:hint="DT50-001"
+                    android:textColor="#212121" android:textColorHint="#9E9E9E"
+                    android:background="@android:color/transparent"/>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
@@ -78,11 +88,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
+            app:cardBackgroundColor="#FFFFFF"
             app:cardCornerRadius="8dp"
-            app:cardElevation="2dp"
-            xmlns:app="http://schemas.android.com/apk/res-auto">
+            app:cardElevation="2dp">
             <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-                android:orientation="vertical" android:padding="16dp">
+                android:orientation="vertical" android:padding="16dp"
+                android:background="#FFFFFF">
                 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
                     android:text="@string/settings_api_url_label"
                     android:textColor="#1565C0" android:textSize="14sp" android:textStyle="bold"/>
@@ -92,7 +103,9 @@
                 <EditText android:id="@+id/et_api_url"
                     android:layout_width="match_parent" android:layout_height="wrap_content"
                     android:inputType="textUri"
-                    android:hint="https://api.example.com/tags"/>
+                    android:hint="https://api.example.com/tags"
+                    android:textColor="#212121" android:textColorHint="#9E9E9E"
+                    android:background="@android:color/transparent"/>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 

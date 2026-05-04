@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.util.Log;
 
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
@@ -30,6 +31,9 @@ public class RFIDApplication extends Application {
     public void onCreate() {
         super.onCreate();
         mContext = this;
+
+        // Forzar tema claro en toda la app — evita zonas oscuras en modo DayNight
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
         // SharedPreferences
         SPUtils.init(this);
